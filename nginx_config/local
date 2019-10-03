@@ -1,0 +1,24 @@
+server_names_hash_bucket_size 64;
+
+server {
+    listen 80;
+    server_name $host;
+    return 301 https://$host$request_uri;
+}
+server {
+    listen 443 ssl;
+    server_name $host;
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED";
+
+    add_header Strict-Transport-Security "max-age=31536000";
+
+    ssl_certificate /etc/asterisk/keys/asterisk.crt;
+    ssl_certificate_key /etc/asterisk/keys/asterisk.key;
+
+
+    root /usr/local/webrtc-sip-example;
+    index index.html index.htm;
+}
